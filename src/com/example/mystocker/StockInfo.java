@@ -10,7 +10,7 @@ public class StockInfo {
 	String max_price;
 	String min_price;
 	boolean badNO;
-
+    byte[] chart;
 	public StockInfo() {
 		no = "";
 		name = "";
@@ -19,9 +19,18 @@ public class StockInfo {
 		current_price = "0";
 		max_price = "0";
 		min_price = "0";
+		chart=null;
 		badNO = true;
 	}
 
+	public byte[] getChart(){
+		return chart;
+	}
+
+	public void setChart(byte[] chart){
+		this.chart=chart;
+	}
+	
 	public String getNo() {
 		return no;
 	}
@@ -99,6 +108,7 @@ public class StockInfo {
 		current_price = "0";
 		max_price = "0";
 		min_price = "0";
+		chart=null;
 		badNO = true;
 	}
 
@@ -109,7 +119,8 @@ public class StockInfo {
 		current_price = sinfo.getCurrent_price();
 		max_price = sinfo.getMax_price();
 		min_price = sinfo.getMin_price();
-		badNO = false;
+		badNO = sinfo.isBadNO();
+		chart=sinfo.chart;
 	}
 
 	@Override
