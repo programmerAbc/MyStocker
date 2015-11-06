@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import android.app.ActionBar.LayoutParams;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -19,6 +18,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,15 +50,17 @@ public class MainActivity extends ListActivity {
 	private TextView dayLowTextView;
 	private TextView dayHighTextView;
 	private ImageView chartView;
-	
+	private SwipeRefreshLayout swipeRefreshLayout;
 	Context mContext;
-    int currentPosition;
+	int currentPosition;
+	Handler stopRefreshHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mContext = this;
+		stopRefreshHandler = new Handler(Looper.getMainLooper());
 		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
 		this.setListAdapter(quoteAdapter);
 		addButton = (Button) findViewById(R.id.add_symbols_button);
@@ -65,10 +68,41 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				addSymbol();
-				startService(new Intent(MainActivity.this,StockUpdateService.class));
+				startService(new Intent(MainActivity.this, StockUpdateService.class));
 			}
 		});
 		symbolText = (EditText) findViewById(R.id.stock_symbols);
+		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				swipeRefreshLayout.setRefreshing(true);
+				App.getDataHandler().refreshStocks();
+				stopRefreshHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						swipeRefreshLayout.setRefreshing(false);
+					}
+				}, 1500);
+
+			}
+		});
+		swipeRefreshLayout.post(new Runnable() {
+			@Override
+			public void run() {
+				swipeRefreshLayout.setRefreshing(true);
+				App.getDataHandler().refreshStocks();
+				stopRefreshHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						swipeRefreshLayout.setRefreshing(false);
+					}
+				}, 1500);
+			}
+		});
+
 	}
 
 	@Override
@@ -89,8 +123,6 @@ public class MainActivity extends ListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	
 
 	@Override
 	protected void onDestroy() {
@@ -114,8 +146,8 @@ public class MainActivity extends ListActivity {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
 		StockInfo quote = (StockInfo) quoteAdapter.getItem(position);
-		currentPosition= position;
-		Log.i("LISTCLICK",position+"\n");
+		currentPosition = position;
+		Log.i("LISTCLICK", position + "\n");
 		if (dialog == null) {
 			dialog = new Dialog(mContext);
 			dialog.setContentView(R.layout.quote_detail);
@@ -169,7 +201,7 @@ public class MainActivity extends ListActivity {
 			dayLowTextView.setText(quote.min_price);
 			dayHighTextView.setText(quote.max_price);
 			noTextView.setText(quote.no);
-			chartView.setImageBitmap(BitmapFactory.decodeByteArray(quote.chart,0,quote.chart.length));
+			chartView.setImageBitmap(BitmapFactory.decodeByteArray(quote.chart, 0, quote.chart.length));
 		}
 
 		dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
