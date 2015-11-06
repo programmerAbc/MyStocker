@@ -53,6 +53,11 @@ public class StockUpdateService extends IntentService {
 	public void refreshStock() {
 		ContentResolver cr = getContentResolver();
 		Cursor query = cr.query(StockProvider.CONTENT_URI, null, null, null, null);
+		if(query==null)
+		{
+			return;
+		}
+		
 		if (query.getCount() == 0) {
 			query.close();
 			return;

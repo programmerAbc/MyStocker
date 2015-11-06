@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="auto_refresh_freq_entries">
+        <item>每分钟</item>
+        <item>5分钟</item>
+        <item>10分钟</item>
+        <item>15分钟</item>
+        <item>每小时</item>
+    </string-array>
+    
+    <string-array name="auto_refresh_freq_entryvalues">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>60</item>
+    </string-array>
+</resources>

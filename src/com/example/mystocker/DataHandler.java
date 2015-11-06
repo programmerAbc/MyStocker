@@ -2,10 +2,14 @@ package com.example.mystocker;
 
 import java.util.ArrayList;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.view.ViewDebug.FlagToString;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
@@ -15,6 +19,8 @@ public class DataHandler {
 	StockDatabase stockDatabase;
 	QuoteAdapter adapter;
 	Handler handler;
+	Intent stockUpdateServiceIntent;
+	PendingIntent stockUpdateServicePendingIntent;
 
 	public DataHandler(Context context) {
 		this.context = context;
@@ -28,6 +34,8 @@ public class DataHandler {
 			refreshStocks();
 		}
 		adapter = new QuoteAdapter(context, this);
+		stockUpdateServiceIntent = new Intent(context, StockUpdateService.class);
+		stockUpdateServicePendingIntent = PendingIntent.getService(context, 0, stockUpdateServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	public BaseAdapter getAdatper() {
@@ -90,7 +98,7 @@ public class DataHandler {
 	}
 
 	public void refreshStocks() {
-		context.startService(new Intent(context, StockUpdateService.class));
+		context.startService(new Intent(context,StockUpdateService.class));
 	}
 
 	public int size() {
@@ -120,6 +128,14 @@ public class DataHandler {
 
 	public StockInfo getQuoteFromIndex(int index) {
 		return stockInfos.get(index);
+	}
+
+	public void registerAutoUpdate(long timeInterval) {
+		((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).setRepeating(AlarmManager.ELAPSED_REALTIME, 0, timeInterval, stockUpdateServicePendingIntent);
+	}
+
+	public void unregisterAutoUpdate() {
+		((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).cancel(stockUpdateServicePendingIntent);
 	}
 
 }
