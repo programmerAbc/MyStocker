@@ -1,18 +1,12 @@
 package com.example.mystocker;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import android.app.ActionBar.LayoutParams;
-import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,9 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity implements OnSharedPreferenceChangeListener {
@@ -34,16 +26,6 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 	private QuoteAdapter quoteAdapter;
 	private EditText symbolText;
 	private Button addButton;
-	private Button cancelButton;
-	private Button deleteButton;
-	private Dialog dialog = null;
-	private TextView currentTextView;
-	private TextView noTextView;
-	private TextView openTextView;
-	private TextView closeTextView;
-	private TextView dayLowTextView;
-	private TextView dayHighTextView;
-	private ImageView chartView;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	Context mContext;
 	int currentPosition;
@@ -53,12 +35,14 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 	private double updateFreqMin = 0;
 	private boolean autoUpdate = false;
     private static final String TAG="LifeCycle";
+    private StockDetailDialogFragment stockDetailDialogFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG,"onCreate");
 		setContentView(R.layout.activity_main);
 		mContext = this;
+		stockDetailDialogFragment=new StockDetailDialogFragment(mContext);
 		stopRefreshHandler = new Handler(Looper.getMainLooper());
 		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
 		this.setListAdapter(quoteAdapter);
@@ -162,68 +146,8 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		StockInfo quote = (StockInfo) quoteAdapter.getItem(position);
-		currentPosition = position;
-		Log.i("LISTCLICK", position + "\n");
-		if (dialog == null) {
-			dialog = new Dialog(mContext);
-			dialog.setContentView(R.layout.quote_detail);
-			deleteButton = (Button) dialog.findViewById(R.id.delete);
-			deleteButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					App.getDataHandler().removeQuoteByIndex(currentPosition);
-					dialog.hide();
-				}
-			});
-			cancelButton = (Button) dialog.findViewById(R.id.close);
-			cancelButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					dialog.hide();
-				}
-			});
-			currentTextView = (TextView) dialog.findViewById(R.id.current);
-			noTextView = (TextView) dialog.findViewById(R.id.no);
-			openTextView = (TextView) dialog.findViewById(R.id.opening_price);
-			closeTextView = (TextView) dialog.findViewById(R.id.closing_price);
-			dayLowTextView = (TextView) dialog.findViewById(R.id.day_low);
-			dayHighTextView = (TextView) dialog.findViewById(R.id.day_high);
-			chartView = (ImageView) dialog.findViewById(R.id.chart_view);
-		}
-		if (quote.isBadNO()) {
-			dialog.setTitle("¹ÉÆ±´úÂë´íÎó");
-			currentTextView.setText("");
-			openTextView.setText("");
-			closeTextView.setText("");
-			dayLowTextView.setText("");
-			dayHighTextView.setText("");
-			noTextView.setText("");
-			chartView.setImageDrawable(mContext.getResources().getDrawable(android.R.drawable.ic_delete));
-		} else {
-			dialog.setTitle(quote.getName());
-			double current = Double.parseDouble(quote.getCurrent_price());
-			double closing_price = Double.parseDouble(quote.getClosing_price());
-			DecimalFormat df = new DecimalFormat("#0.00");
-			String percent = df.format((current - closing_price) * 100 / closing_price) + "%";
-			if (current > closing_price) {
-				currentTextView.setTextColor(0xffee3b3b);
-			} else {
-				currentTextView.setTextColor(0xff2e8b57);
-			}
-			currentTextView.setText(df.format(current) + "(" + percent + ")");
-			openTextView.setText(quote.opening_price);
-			closeTextView.setText(quote.closing_price);
-			dayLowTextView.setText(quote.min_price);
-			dayHighTextView.setText(quote.max_price);
-			noTextView.setText(quote.no);
-			chartView.setImageBitmap(BitmapFactory.decodeByteArray(quote.chart, 0, quote.chart.length));
-		}
-
-		dialog.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		dialog.show();
-
+		stockDetailDialogFragment.setStockInfo(position);
+		stockDetailDialogFragment.show(getFragmentManager(),"DetailFragmentDialog");
 	}
 
 	private void addSymbol() {
