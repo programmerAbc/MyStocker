@@ -16,16 +16,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity implements OnSharedPreferenceChangeListener {
 
 	private QuoteAdapter quoteAdapter;
-	private EditText symbolText;
-	private Button addButton;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	Context mContext;
 	int currentPosition;
@@ -47,15 +45,7 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
 		this.setListAdapter(quoteAdapter);
 		PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
-		addButton = (Button) findViewById(R.id.add_symbols_button);
-		addButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				addSymbol();
-				startService(new Intent(MainActivity.this, StockUpdateService.class));
-			}
-		});
-		symbolText = (EditText) findViewById(R.id.stock_symbols);
+	
 		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 		swipeRefreshLayout.setColorSchemeColors(0xff5c87eb);
 		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,16 +80,29 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 
 	}
 
-	
 	private static final int SHOW_PREFERENCES = 1;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		super.onCreateOptionsMenu(menu);
-		//menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.menu_preferences).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		 getMenuInflater().inflate(R.menu.main, menu);
-		
+		getMenuInflater().inflate(R.menu.main, menu);
+		MenuItem menuItem;
+		menuItem=menu.findItem(R.id.action_add);
+		View view=menuItem.getActionView();
+		final AutoCompleteTextView acTextView=(AutoCompleteTextView)view.findViewById(R.id.action_add_actextview);
+		acTextView.setAdapter(App.getDataHandler().getSuggestionAdatper());
+		acTextView.setThreshold(1);
+		ImageButton imageButton=(ImageButton)view.findViewById(R.id.action_add_imagebutton);
+		imageButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				addSymbol(acTextView.getText().toString().trim());
+				acTextView.setText(null);
+				App.getDataHandler().refreshStocks();
+			}
+		});
 		return true;
 	}
 
@@ -150,21 +153,18 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		stockDetailDialogFragment.show(getFragmentManager(),"DetailFragmentDialog");
 	}
 
-	private void addSymbol() {
-		String symbolsStr = symbolText.getText().toString().trim();
-		if (symbolsStr.equals("")) {
+	private void addSymbol(String str) {
+		if (str.equals("")) {
 			Toast.makeText(mContext, "«Î ‰»Îπ…∆±¥˙¬Î", Toast.LENGTH_SHORT).show();
 			return;
 		}
-
-		String symbolArray[] = symbolsStr.split("\n");
+		String symbolArray[] = str.split("\n");
 		int count = symbolArray.length;
 		ArrayList<String> symbolList = new ArrayList<String>();
 		for (int i = 0; i < count; ++i) {
 			symbolList.add(symbolArray[i].trim());
 		}
 		App.getDataHandler().addSymbols(symbolList);
-		symbolText.setText(null);
 	}
 
 	@Override

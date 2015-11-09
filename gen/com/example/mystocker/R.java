@@ -30,7 +30,9 @@ public final class R {
         public static final int settingsicon=0x7f020001;
     }
     public static final class id {
-        public static final int add_symbols_button=0x7f0a0003;
+        public static final int action_add=0x7f0a0016;
+        public static final int action_add_actextview=0x7f0a0000;
+        public static final int action_add_imagebutton=0x7f0a0001;
         public static final int chart_view=0x7f0a0013;
         public static final int close=0x7f0a0015;
         public static final int closing_price=0x7f0a000e;
@@ -47,18 +49,18 @@ public final class R {
         public static final int open_label=0x7f0a000b;
         public static final int opening_price=0x7f0a000c;
         public static final int percent=0x7f0a0007;
-        public static final int seekBar1=0x7f0a0000;
-        public static final int settings=0x7f0a0016;
-        public static final int stock_symbols=0x7f0a0002;
-        public static final int swipeContainer=0x7f0a0001;
+        public static final int seekBar1=0x7f0a0002;
+        public static final int settings=0x7f0a0017;
+        public static final int swipeContainer=0x7f0a0003;
         public static final int symbol=0x7f0a0004;
         public static final int volume_label=0x7f0a000d;
     }
     public static final class layout {
-        public static final int actionviewtest=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int quote_cell=0x7f030002;
-        public static final int quote_detail=0x7f030003;
+        public static final int action_add_view=0x7f030000;
+        public static final int actionviewtest=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int quote_cell=0x7f030003;
+        public static final int quote_detail=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f090000;

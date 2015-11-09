@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.ViewDebug.FlagToString;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
@@ -21,11 +22,12 @@ public class DataHandler {
 	Handler handler;
 	Intent stockUpdateServiceIntent;
 	PendingIntent stockUpdateServicePendingIntent;
-
+	ArrayAdapter<String> suggestionAdapter;
 	public DataHandler(Context context) {
 		this.context = context;
 		handler = new Handler(Looper.getMainLooper());
-
+		
+		suggestionAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,new ArrayList<String>());
 		stockDatabase = new StockDatabase(context, StockDatabase.DATABASE_NAME, null, StockDatabase.DATABASE_VERSION);
 		stockInfos = stockDatabase.selectStock();
 		if (stockInfos == null) {
@@ -33,6 +35,7 @@ public class DataHandler {
 		} else {
 			refreshStocks();
 		}
+		populateSuggestionAdapter();
 		adapter = new QuoteAdapter(context, this);
 		stockUpdateServiceIntent = new Intent(context, StockUpdateService.class);
 		stockUpdateServicePendingIntent = PendingIntent.getService(context, 0, stockUpdateServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -40,6 +43,16 @@ public class DataHandler {
 
 	public BaseAdapter getAdatper() {
 		return adapter;
+	}
+
+	private void populateSuggestionAdapter() {
+		Log.i("POPULATE", "HERE");
+		suggestionAdapter.clear();
+		if (stockInfos.isEmpty() == false) {
+			for (StockInfo stockInfo : stockInfos) {
+				suggestionAdapter.add(stockInfo.getNo());
+			}
+		}	
 	}
 
 	public void updateStock(StockInfo sinfo) {
@@ -85,6 +98,7 @@ public class DataHandler {
 				if (newStockInfos.isEmpty() == false) {
 					stockInfos.addAll(newStockInfos);
 					adapter.notifyDataSetChanged();
+					populateSuggestionAdapter();
 					Toast.makeText(context, "股票添加成功", Toast.LENGTH_SHORT).show();
 				} else {
 					Toast.makeText(context, "股票添加失败", Toast.LENGTH_SHORT).show();
@@ -98,7 +112,7 @@ public class DataHandler {
 	}
 
 	public void refreshStocks() {
-		context.startService(new Intent(context,StockUpdateService.class));
+		context.startService(new Intent(context, StockUpdateService.class));
 	}
 
 	public int size() {
@@ -124,6 +138,7 @@ public class DataHandler {
 	public void removeQuoteByIndex(int index) {
 		stockInfos.remove(index);
 		adapter.notifyDataSetChanged();
+		populateSuggestionAdapter();
 	}
 
 	public StockInfo getQuoteFromIndex(int index) {
@@ -138,4 +153,8 @@ public class DataHandler {
 		((AlarmManager) context.getSystemService(Context.ALARM_SERVICE)).cancel(stockUpdateServicePendingIntent);
 	}
 
+	public ArrayAdapter<String> getSuggestionAdatper() {
+
+		return suggestionAdapter;
+	}
 }
