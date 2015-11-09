@@ -106,15 +106,16 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 
 	}
 
-	private static final int MENU_PREFERENCES = Menu.FIRST + 1;
+	
 	private static final int SHOW_PREFERENCES = 1;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.main, menu);
 		super.onCreateOptionsMenu(menu);
-		menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.menu_preferences).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		//menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.menu_preferences).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		 getMenuInflater().inflate(R.menu.main, menu);
+		
 		return true;
 	}
 
@@ -125,7 +126,7 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
-		case MENU_PREFERENCES: {
+		case R.id.settings: {
 			startActivityForResult(new Intent(this, FragmentPreferences.class), SHOW_PREFERENCES);
 			return true;
 		}

@@ -3,9 +3,10 @@
     tools:context="com.example.mystocker.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/settings"
+        android:showAsAction="always|collapseActionView"
+        android:title="@string/menu_preferences"
+        android:icon="@drawable/settingsicon"
+        />
 
 </menu>
