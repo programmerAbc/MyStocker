@@ -37,7 +37,7 @@ public final class R {
         public static final int action_add_imagebutton=0x7f0a0001;
         public static final int baselayout=0x7f0a0004;
         public static final int chart_view=0x7f0a0019;
-        public static final int close=0x7f0a001b;
+        public static final int closeButton=0x7f0a001b;
         public static final int closing_price=0x7f0a0014;
         public static final int current=0x7f0a000c;
         public static final int current_label=0x7f0a000e;
@@ -45,7 +45,7 @@ public final class R {
         public static final int day_high_label=0x7f0a0017;
         public static final int day_low=0x7f0a0016;
         public static final int day_low_label=0x7f0a0015;
-        public static final int delete=0x7f0a001a;
+        public static final int focusButton=0x7f0a001a;
         public static final int layer1=0x7f0a0005;
         public static final int layer2=0x7f0a0007;
         public static final int layer3=0x7f0a0009;
@@ -87,6 +87,7 @@ public final class R {
         public static final int close=0x7f070008;
         public static final int delete=0x7f07000a;
         public static final int enter_symbols=0x7f070007;
+        public static final int focus=0x7f070013;
         public static final int hello_world=0x7f070001;
         public static final int menu_preferences=0x7f070012;
         public static final int no_stocks=0x7f070003;

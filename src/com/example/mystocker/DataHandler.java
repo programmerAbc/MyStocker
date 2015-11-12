@@ -154,7 +154,14 @@ public class DataHandler {
 	}
 
 	public ArrayAdapter<String> getSuggestionAdatper() {
-
 		return suggestionAdapter;
+	}
+	
+	public void setFocused(int position,boolean isFocused){
+        stockInfos.get(position).setFocused(isFocused);
+        adapter.notifyDataSetChanged();
+	}
+	public boolean isFocused(int position){
+		return stockInfos.get(position).isFocused();
 	}
 }

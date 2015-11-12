@@ -179,7 +179,16 @@ public class StockInfoCellView extends FrameLayout {
 	public void setStockInfo(StockInfo stockInfo, int position) {
 		this.stockInfo = stockInfo;
 		this.position=position;
+		
 		symbolTV.setText(stockInfo.getNo());
+		if(stockInfo.isFocused())
+		{
+			symbolTV.setTextColor(0xffff1111);
+		}
+		else
+		{
+			symbolTV.setTextColor(0xff000000);
+		}
 		nameTV.setText(stockInfo.getName());
 		double current = Double.parseDouble(stockInfo.getCurrent_price());
 		double closing_price = Double.parseDouble(stockInfo.getClosing_price());

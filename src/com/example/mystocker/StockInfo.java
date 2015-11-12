@@ -11,6 +11,7 @@ public class StockInfo {
 	String min_price;
 	boolean badNO;
 	boolean slideLeft;
+	boolean focused;
     byte[] chart;
 	public StockInfo() {
 		no = "";
@@ -23,6 +24,7 @@ public class StockInfo {
 		chart=null;
 		badNO = true;
 		slideLeft=false;
+		focused=false;
 	}
 
 	public byte[] getChart(){
@@ -137,6 +139,14 @@ public class StockInfo {
 
 	public void setSlideLeft(boolean slideLeft) {
 		this.slideLeft = slideLeft;
+	}
+
+	public boolean isFocused() {
+		return focused;
+	}
+
+	public void setFocused(boolean focused) {
+		this.focused = focused;
 	}
 
 	
