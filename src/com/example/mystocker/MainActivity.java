@@ -43,6 +43,7 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		stockDetailDialogFragment=new StockDetailDialogFragment(mContext);
 		stopRefreshHandler = new Handler(Looper.getMainLooper());
 		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
+		quoteAdapter.setActivityContext(this);
 		this.setListAdapter(quoteAdapter);
 		PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
 	

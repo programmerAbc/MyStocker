@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -35,7 +36,8 @@ public class StockInfoCellView extends FrameLayout {
 	private StockInfo stockInfo = null;
     private int position;
 	private StockInfoCellInterface sicInterface;
-	
+	private StockDetailDialogFragment stockDetailDialogFragment;
+	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
 
 	public StockInfoCellView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -43,6 +45,7 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
+		mContext=context;
 	}
 
 	public StockInfoCellView(Context context, AttributeSet attrs) {
@@ -50,6 +53,7 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
+		mContext=context;
 	}
 
 	public StockInfoCellView(Context context) {
@@ -57,6 +61,7 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
+		mContext=context;
 	}
 
 	public void setStockInfoCellInterface(StockInfoCellInterface sicInterface){
@@ -81,7 +86,8 @@ public class StockInfoCellView extends FrameLayout {
 			    if(sicInterface!=null){
 			    	sicInterface.removeStockInfo();
 			    }
-			    else{
+			    else
+			    {
 			    	App.getDataHandler().removeQuoteByIndex(position);
 			    }
 			}
@@ -96,7 +102,11 @@ public class StockInfoCellView extends FrameLayout {
 				  if(sicInterface!=null){
 				    	sicInterface.viewStockInfo();
 				  }
-				
+				  else
+				  {
+					  stockDetailDialogFragment.setStockInfo(position);
+					  stockDetailDialogFragment.show(((Activity)mContext).getFragmentManager(),"DetailFragmentDialog");
+				  }
 			}
 		});
 		simpleOnGestureListener = new SimpleOnGestureListener() {
@@ -128,6 +138,7 @@ public class StockInfoCellView extends FrameLayout {
 			}
 		};
 		gestureDetector = new GestureDetector(getContext(), simpleOnGestureListener);
+		stockDetailDialogFragment=new StockDetailDialogFragment(mContext);
 		
 	}
 

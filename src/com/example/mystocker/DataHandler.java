@@ -36,7 +36,7 @@ public class DataHandler {
 			refreshStocks();
 		}
 		populateSuggestionAdapter();
-		adapter = new QuoteAdapter(context, this);
+		adapter = new QuoteAdapter(this);
 		stockUpdateServiceIntent = new Intent(context, StockUpdateService.class);
 		stockUpdateServicePendingIntent = PendingIntent.getService(context, 0, stockUpdateServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}

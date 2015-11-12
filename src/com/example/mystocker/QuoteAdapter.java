@@ -1,18 +1,24 @@
 package com.example.mystocker;
 
+import com.example.mystocker.StockInfoCellView.StockInfoCellInterface;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-class QuoteAdapter extends BaseAdapter {
+class QuoteAdapter extends BaseAdapter{
 	public DataHandler dataHandler;
 	Context context;
-	public QuoteAdapter(Context mContext, DataHandler mDataHandler) {
-		context = mContext;
+	public QuoteAdapter(DataHandler mDataHandler) {
 		dataHandler = mDataHandler;
 	}
 
+	public void setActivityContext(Context context)
+	{
+		this.context=context;
+	}
+	
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -40,4 +46,6 @@ class QuoteAdapter extends BaseAdapter {
         v.setStockInfo(quote, arg0);
 		return v;
 	}
+
+	
 }
