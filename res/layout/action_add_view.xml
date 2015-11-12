@@ -20,6 +20,8 @@
         android:id="@+id/action_add_imagebutton"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@android:drawable/ic_menu_edit" />
+        android:src="@android:drawable/ic_menu_edit" 
+        android:background="@android:color/transparent"
+        />
 
 </LinearLayout>

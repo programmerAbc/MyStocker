@@ -10,6 +10,7 @@ public class StockInfo {
 	String max_price;
 	String min_price;
 	boolean badNO;
+	boolean slideLeft;
     byte[] chart;
 	public StockInfo() {
 		no = "";
@@ -21,6 +22,7 @@ public class StockInfo {
 		min_price = "0";
 		chart=null;
 		badNO = true;
+		slideLeft=false;
 	}
 
 	public byte[] getChart(){
@@ -128,4 +130,14 @@ public class StockInfo {
 		// TODO Auto-generated method stub
 		return no.equals(((StockInfo) o).getNo());
 	}
+
+	public boolean isSlideLeft() {
+		return slideLeft;
+	}
+
+	public void setSlideLeft(boolean slideLeft) {
+		this.slideLeft = slideLeft;
+	}
+
+	
 }

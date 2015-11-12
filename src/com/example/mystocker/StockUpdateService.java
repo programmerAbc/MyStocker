@@ -68,6 +68,7 @@ public class StockUpdateService extends IntentService {
 		}
 		query.close();
 		ArrayList<StockInfo> stockInfos = getQuotesFromArray(stocks);
+		if(stockInfos==null) return;
 		for (StockInfo stockInfo : stockInfos) {
 			ContentValues values = new ContentValues();
 			values.put(StockProvider.KEY_STOCK_NO, stockInfo.getNo());

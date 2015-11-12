@@ -24,36 +24,44 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f060000;
         public static final int activity_vertical_margin=0x7f060001;
+        public static final int slide_left_distance_layer2=0x7f060003;
+        public static final int slide_left_distance_layer3=0x7f060002;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int settingsicon=0x7f020001;
     }
     public static final class id {
-        public static final int action_add=0x7f0a0016;
+        public static final int action_add=0x7f0a001c;
         public static final int action_add_actextview=0x7f0a0000;
         public static final int action_add_imagebutton=0x7f0a0001;
-        public static final int chart_view=0x7f0a0013;
-        public static final int close=0x7f0a0015;
-        public static final int closing_price=0x7f0a000e;
-        public static final int current=0x7f0a0006;
-        public static final int current_label=0x7f0a0008;
-        public static final int day_high=0x7f0a0012;
-        public static final int day_high_label=0x7f0a0011;
-        public static final int day_low=0x7f0a0010;
-        public static final int day_low_label=0x7f0a000f;
-        public static final int delete=0x7f0a0014;
-        public static final int name=0x7f0a0005;
-        public static final int no=0x7f0a000a;
-        public static final int no_label=0x7f0a0009;
-        public static final int open_label=0x7f0a000b;
-        public static final int opening_price=0x7f0a000c;
-        public static final int percent=0x7f0a0007;
+        public static final int baselayout=0x7f0a0004;
+        public static final int chart_view=0x7f0a0019;
+        public static final int close=0x7f0a001b;
+        public static final int closing_price=0x7f0a0014;
+        public static final int current=0x7f0a000c;
+        public static final int current_label=0x7f0a000e;
+        public static final int day_high=0x7f0a0018;
+        public static final int day_high_label=0x7f0a0017;
+        public static final int day_low=0x7f0a0016;
+        public static final int day_low_label=0x7f0a0015;
+        public static final int delete=0x7f0a001a;
+        public static final int layer1=0x7f0a0005;
+        public static final int layer2=0x7f0a0007;
+        public static final int layer3=0x7f0a0009;
+        public static final int name=0x7f0a000b;
+        public static final int no=0x7f0a0010;
+        public static final int no_label=0x7f0a000f;
+        public static final int open_label=0x7f0a0011;
+        public static final int opening_price=0x7f0a0012;
+        public static final int percent=0x7f0a000d;
+        public static final int remove_button=0x7f0a0006;
         public static final int seekBar1=0x7f0a0002;
-        public static final int settings=0x7f0a0017;
+        public static final int settings=0x7f0a001d;
         public static final int swipeContainer=0x7f0a0003;
-        public static final int symbol=0x7f0a0004;
-        public static final int volume_label=0x7f0a000d;
+        public static final int symbol=0x7f0a000a;
+        public static final int view_button=0x7f0a0008;
+        public static final int volume_label=0x7f0a0013;
     }
     public static final class layout {
         public static final int action_add_view=0x7f030000;
