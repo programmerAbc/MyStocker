@@ -114,29 +114,7 @@ public class StockInfoCellView extends FrameLayout {
 			public boolean onDown(MotionEvent event) {
 				return true;
 			}
-
-			@Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-				// TODO Auto-generated method stub
-//				final float flingMin = 5;
-//				float flingDistance = e2.getX() - e1.getX();
-//
-//				if (Math.abs(flingDistance) > flingMin) {
-//					if (flingDistance > 0) {
-//						if (slideRightAS != null) {
-//							slideRightAS.start();
-//							stockInfo.setSlideLeft(false);
-//						}
-//					} else if (flingDistance < 0) {
-//						if (slideLeftAS != null) {
-//							slideLeftAS.start();
-//							stockInfo.setSlideLeft(true);
-//						}
-//					}
-//				}
-				return true;
-			}
-
+			
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
