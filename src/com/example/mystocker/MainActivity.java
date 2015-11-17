@@ -2,83 +2,83 @@ package com.example.mystocker;
 
 import java.util.ArrayList;
 
-import android.app.ListActivity;
+
+
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity implements OnSharedPreferenceChangeListener {
-
-	private QuoteAdapter quoteAdapter;
-	private SwipeRefreshLayout swipeRefreshLayout;
+public class MainActivity extends FragmentActivity implements OnSharedPreferenceChangeListener {
+	private MyViewPager mPager;
+	private SlideScreenPagerAdapter mPagerAdapter;
 	Context mContext;
-	int currentPosition;
-	Handler stopRefreshHandler;
 	private static final String PrefAutoUpdate = "PREF_AUTO_UPDATE";
 	private static final String PrefUpdateFreq = "PREF_UPDATE_FREQ";
 	private double updateFreqMin = 0;
 	private boolean autoUpdate = false;
+	private GridView indicatorGridView;
+	private ImageView indicatorImg;
     private static final String TAG="LifeCycle";
-    private StockDetailDialogFragment stockDetailDialogFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i(TAG,"onCreate");
 		setContentView(R.layout.activity_main);
 		mContext = this;
-		stockDetailDialogFragment=new StockDetailDialogFragment(mContext);
-		stopRefreshHandler = new Handler(Looper.getMainLooper());
-		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
-		quoteAdapter.setActivityContext(this);
-		this.setListAdapter(quoteAdapter);
-		PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
+	    mPager=(MyViewPager)findViewById(R.id.pager);
+	    mPagerAdapter=new SlideScreenPagerAdapter(getSupportFragmentManager());
+	    mPager.setAdapter(mPagerAdapter);
+	    mPager.setPageTransformer(true, new DepthPageTransformer());
+	    
+	    indicatorGridView=(GridView)findViewById(R.id.indicatorGrid);
+	    indicatorImg=(ImageView)findViewById(R.id.indicatorImg);
+	    indicatorGridView.setAdapter(new IndicatorGridViewAdapter(this));
+	    indicatorGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				mPager.setCurrentItem(arg2, true);
+			}
+	    });
 	
-		swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-		swipeRefreshLayout.setColorSchemeColors(0xff5c87eb);
-		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
+	    
+	    mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			
 			@Override
-			public void onRefresh() {
+			public void onPageSelected(int index) {
 				// TODO Auto-generated method stub
-				swipeRefreshLayout.setRefreshing(true);
-				App.getDataHandler().refreshStocks();
-				stopRefreshHandler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						swipeRefreshLayout.setRefreshing(false);
-					}
-				}, 1500);
-
+				ObjectAnimator.ofFloat(indicatorImg,"x",indicatorGridView.getWidth()/getResources().getInteger(R.integer.page_num)*index).start();
 			}
-		});
-		swipeRefreshLayout.post(new Runnable() {
+			
 			@Override
-			public void run() {
-				swipeRefreshLayout.setRefreshing(true);
-				App.getDataHandler().refreshStocks();
-				stopRefreshHandler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						swipeRefreshLayout.setRefreshing(false);
-					}
-				}, 1500);
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
-
+     	PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
 	}
 
 	private static final int SHOW_PREFERENCES = 1;
@@ -146,13 +146,6 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		Log.i(TAG,"onStop");
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		// TODO Auto-generated method stub
-		super.onListItemClick(l, v, position, id);
-		stockDetailDialogFragment.setStockInfo(position);
-		stockDetailDialogFragment.show(getFragmentManager(),"DetailFragmentDialog");
-	}
 
 	private void addSymbol(String str) {
 		if (str.equals("")) {
@@ -220,6 +213,16 @@ public class MainActivity extends ListActivity implements OnSharedPreferenceChan
 		}
 		
 		
+	}
+
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		super.onWindowFocusChanged(hasFocus);
+		ViewGroup.LayoutParams layoutParams=indicatorImg.getLayoutParams();
+		layoutParams.width=indicatorGridView.getWidth()/getResources().getInteger(R.integer.page_num);
+		indicatorImg.setLayoutParams(layoutParams);
 	}
 
 }
