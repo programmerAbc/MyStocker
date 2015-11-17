@@ -1,7 +1,5 @@
 package com.example.mystocker;
 
-import com.example.mystocker.StockInfoCellView.StockInfoCellInterface;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

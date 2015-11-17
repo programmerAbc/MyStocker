@@ -16,18 +16,21 @@ import android.widget.Toast;
 
 public class DataHandler {
 	private ArrayList<StockInfo> stockInfos = null;
+	private ArrayList<StockInfo> fstockInfos = null;
 	Context context;
 	StockDatabase stockDatabase;
 	QuoteAdapter adapter;
+	FocusQuoteAdapter fadapter;
 	Handler handler;
 	Intent stockUpdateServiceIntent;
 	PendingIntent stockUpdateServicePendingIntent;
 	ArrayAdapter<String> suggestionAdapter;
+
 	public DataHandler(Context context) {
 		this.context = context;
 		handler = new Handler(Looper.getMainLooper());
-		
-		suggestionAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,new ArrayList<String>());
+
+		suggestionAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, new ArrayList<String>());
 		stockDatabase = new StockDatabase(context, StockDatabase.DATABASE_NAME, null, StockDatabase.DATABASE_VERSION);
 		stockInfos = stockDatabase.selectStock();
 		if (stockInfos == null) {
@@ -35,14 +38,33 @@ public class DataHandler {
 		} else {
 			refreshStocks();
 		}
-		populateSuggestionAdapter();
+		fstockInfos = new ArrayList<StockInfo>();
 		adapter = new QuoteAdapter(this);
+		fadapter = new FocusQuoteAdapter(this);
+		populateSuggestionAdapter();
+		populateFocusedStockInfos();
 		stockUpdateServiceIntent = new Intent(context, StockUpdateService.class);
 		stockUpdateServicePendingIntent = PendingIntent.getService(context, 0, stockUpdateServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
+	private void populateFocusedStockInfos() {
+		fstockInfos.clear();
+		if (stockInfos != null && stockInfos.isEmpty() == false) {
+			for (StockInfo sinfo : stockInfos) {
+				if (sinfo.isFocused()) {
+					fstockInfos.add(sinfo);
+				}
+			}
+		}
+		fadapter.notifyDataSetChanged();
+	}
+
 	public BaseAdapter getAdatper() {
 		return adapter;
+	}
+
+	public BaseAdapter getFocusedAdapter() {
+		return fadapter;
 	}
 
 	private void populateSuggestionAdapter() {
@@ -52,7 +74,7 @@ public class DataHandler {
 			for (StockInfo stockInfo : stockInfos) {
 				suggestionAdapter.add(stockInfo.getNo());
 			}
-		}	
+		}
 	}
 
 	public void updateStock(StockInfo sinfo) {
@@ -72,6 +94,7 @@ public class DataHandler {
 				public void run() {
 					// TODO Auto-generated method stub
 					adapter.notifyDataSetChanged();
+					fadapter.notifyDataSetChanged();
 				}
 			});
 		}
@@ -123,26 +146,84 @@ public class DataHandler {
 		}
 	}
 
+	public int focusedSize() {
+		if (fstockInfos != null) {
+			return fstockInfos.size();
+		} else {
+			return 0;
+		}
+	}
+
 	public StockInfo get(int index) {
-		return stockInfos.get(index);
+		if (stockInfos != null && stockInfos.isEmpty() == false) {
+			return stockInfos.get(index);
+		} else {
+			return null;
+		}
+	}
+
+	public StockInfo focusedGet(int index) {
+		if (fstockInfos != null && fstockInfos.isEmpty() == false) {
+			return fstockInfos.get(index);
+		} else {
+			return null;
+		}
 	}
 
 	public ArrayList<StockInfo> getAll() {
 		return stockInfos;
 	}
 
+	public ArrayList<StockInfo> focusedGetAll() {
+		return fstockInfos;
+	}
+
 	public boolean isEmpty() {
 		return stockInfos.isEmpty();
 	}
 
+	public boolean focusedIsEmpty() {
+		return fstockInfos.isEmpty();
+	}
+
 	public void removeQuoteByIndex(int index) {
-		stockInfos.remove(index);
-		adapter.notifyDataSetChanged();
-		populateSuggestionAdapter();
+	
+		if (stockInfos != null && stockInfos.isEmpty() == false) {
+			stockInfos.remove(index);
+			adapter.notifyDataSetChanged();
+			populateSuggestionAdapter();
+			populateFocusedStockInfos();
+		}
+	}
+
+	public void removeFocusedQuoteByIndex(int index) {
+		
+		if (fstockInfos != null && fstockInfos.isEmpty() == false) {
+			
+           StockInfo stock_info=fstockInfos.get(index);
+           fstockInfos.remove(index);
+           fadapter.notifyDataSetChanged();
+           for(StockInfo sinfo:stockInfos)
+           {
+        	   if(sinfo.equals(stock_info))
+        	   {
+        		   
+        		   sinfo.setFocused(false);
+                   adapter.notifyDataSetChanged();
+                   return;
+        	   }
+        	   
+           }
+           
+		}
 	}
 
 	public StockInfo getQuoteFromIndex(int index) {
-		return stockInfos.get(index);
+		return get(index);
+	}
+
+	public StockInfo getFocusedQuoteFromIndex(int index) {
+		return focusedGet(index);
 	}
 
 	public void registerAutoUpdate(long timeInterval) {
@@ -156,12 +237,18 @@ public class DataHandler {
 	public ArrayAdapter<String> getSuggestionAdatper() {
 		return suggestionAdapter;
 	}
-	
-	public void setFocused(int position,boolean isFocused){
-        stockInfos.get(position).setFocused(isFocused);
-        adapter.notifyDataSetChanged();
+
+	public void setFocused(int position, boolean isFocused) {
+		stockInfos.get(position).setFocused(isFocused);
+		adapter.notifyDataSetChanged();
+		populateFocusedStockInfos();
 	}
-	public boolean isFocused(int position){
+
+	public void fresetFocused(int position) {
+		removeFocusedQuoteByIndex(position);
+	}
+
+	public boolean isFocused(int position) {
 		return stockInfos.get(position).isFocused();
 	}
 }

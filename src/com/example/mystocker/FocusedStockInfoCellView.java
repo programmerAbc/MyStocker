@@ -1,7 +1,6 @@
 package com.example.mystocker;
 
 import java.text.DecimalFormat;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -9,22 +8,21 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class StockInfoCellView extends FrameLayout {
+public class FocusedStockInfoCellView extends FrameLayout {
 	private TextView symbolTV;
 	private TextView nameTV;
 	private TextView currentTV;
 	private TextView percentTV;
-	
+
 	private View layer2;
 	private View layer3;
 	private ImageButton removeButton;
@@ -34,40 +32,40 @@ public class StockInfoCellView extends FrameLayout {
 	private AnimatorSet slideLeftAS;
 	private AnimatorSet slideRightAS;
 	private StockInfo stockInfo = null;
-    private int position;
+	private int position;
 	private StockInfoCellInterface sicInterface;
 	private StockDetailDialogFragment stockDetailDialogFragment;
 	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
 
-	public StockInfoCellView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public FocusedStockInfoCellView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
-	public StockInfoCellView(Context context, AttributeSet attrs) {
+	public FocusedStockInfoCellView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
-	public StockInfoCellView(Context context) {
+	public FocusedStockInfoCellView(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
-	public void setStockInfoCellInterface(StockInfoCellInterface sicInterface){
-		this.sicInterface=sicInterface;
+	public void setStockInfoCellInterface(StockInfoCellInterface sicInterface) {
+		this.sicInterface = sicInterface;
 	}
-	
+
 	private void initUI() {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		inflater.inflate(R.layout.quote_cell, this);
@@ -79,34 +77,30 @@ public class StockInfoCellView extends FrameLayout {
 		symbolTV = (TextView) findViewById(R.id.symbol);
 		removeButton = (ImageButton) findViewById(R.id.remove_button);
 		removeButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-			    if(sicInterface!=null){
-			    	sicInterface.removeStockInfo();
-			    }
-			    else
-			    {
-			    	App.getDataHandler().removeQuoteByIndex(position);
-			    }
+				if (sicInterface != null) {
+					sicInterface.removeStockInfo();
+				} else {
+					App.getDataHandler().removeFocusedQuoteByIndex(position);
+				}
 			}
 		});
-		
+
 		viewButton = (ImageButton) findViewById(R.id.view_button);
-        viewButton.setOnClickListener(new View.OnClickListener() {
-			
+		viewButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				  if(sicInterface!=null){
-				    	sicInterface.viewStockInfo();
-				  }
-				  else
-				  {
-					  stockDetailDialogFragment.setStockInfo(position);
-					  stockDetailDialogFragment.show(((Activity)mContext).getFragmentManager(),"DetailFragmentDialog");
-				  }
+				if (sicInterface != null) {
+					sicInterface.viewStockInfo();
+				} else {
+					stockDetailDialogFragment.setStockInfo(position);
+					stockDetailDialogFragment.show(((Activity) mContext).getFragmentManager(), "DetailFragmentDialog");
+				}
 			}
 		});
 		simpleOnGestureListener = new SimpleOnGestureListener() {
@@ -114,19 +108,16 @@ public class StockInfoCellView extends FrameLayout {
 			public boolean onDown(MotionEvent event) {
 				return true;
 			}
-			
+
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
-				if(distanceX<0)
-				{
+				if (distanceX < 0) {
 					if (slideRightAS != null) {
 						slideRightAS.start();
 						stockInfo.setSlideLeft(false);
 					}
-				}
-				else
-				{
+				} else {
 					if (slideLeftAS != null) {
 						slideLeftAS.start();
 						stockInfo.setSlideLeft(true);
@@ -136,7 +127,7 @@ public class StockInfoCellView extends FrameLayout {
 			}
 		};
 		gestureDetector = new GestureDetector(getContext(), simpleOnGestureListener);
-		stockDetailDialogFragment=new StockDetailDialogFragment(mContext);
+		stockDetailDialogFragment = new StockDetailDialogFragment(mContext);
 	}
 
 	private void initAnim() {
@@ -175,15 +166,12 @@ public class StockInfoCellView extends FrameLayout {
 
 	public void setStockInfo(StockInfo stockInfo, int position) {
 		this.stockInfo = stockInfo;
-		this.position=position;
-		
+		this.position = position;
+
 		symbolTV.setText(stockInfo.getNo());
-		if(stockInfo.isFocused())
-		{
+		if (stockInfo.isFocused()) {
 			symbolTV.setTextColor(0xffff1111);
-		}
-		else
-		{
+		} else {
 			symbolTV.setTextColor(0xff000000);
 		}
 		nameTV.setText(stockInfo.getName());
@@ -220,6 +208,7 @@ public class StockInfoCellView extends FrameLayout {
 
 	interface StockInfoCellInterface {
 		void viewStockInfo();
+
 		void removeStockInfo();
 	}
 }

@@ -16,7 +16,6 @@ private ListView stockListView;
 private SwipeRefreshLayout swipeRefreshLayout;
 private QuoteAdapter quoteAdapter;
 private Handler stopRefreshHandler;
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
