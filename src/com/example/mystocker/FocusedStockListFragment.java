@@ -33,6 +33,7 @@ public void onCreate(Bundle savedInstanceState) {
 	stopRefreshHandler=new Handler(Looper.getMainLooper());
 	fquoteAdapter=(FocusQuoteAdapter)App.getDataHandler().getFocusedAdapter();
 	fquoteAdapter.setActivityContext(getActivity());
+
 }
 @Override
 public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
