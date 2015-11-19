@@ -13,13 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class FocusedStockDetailFragment extends Fragment{
+public class FocusedStockDetailFragment extends Fragment {
 	private int position;
 	private Context context;
-    private StockDetailFragmentButtonClickListener listener;
-	public FocusedStockDetailFragment(Context context,StockDetailFragmentButtonClickListener listener) {
+	private StockDetailFragmentButtonClickListener listener;
+
+	public FocusedStockDetailFragment(Context context, StockDetailFragmentButtonClickListener listener) {
 		this.context = context;
-		this.listener=listener;
+		this.listener = listener;
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class FocusedStockDetailFragment extends Fragment{
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.quote_detail, container, false);
 		StockInfo stockInfo = App.getDataHandler().getFocusedQuoteFromIndex(position);
-		TextView stockNameTV=(TextView)view.findViewById(R.id.stock_name);
+		TextView stockNameTV = (TextView) view.findViewById(R.id.stock_name);
 		TextView currentTV = (TextView) view.findViewById(R.id.current);
 		TextView noTextView = (TextView) view.findViewById(R.id.no);
 		TextView openTextView = (TextView) view.findViewById(R.id.opening_price);
@@ -53,7 +54,7 @@ public class FocusedStockDetailFragment extends Fragment{
 			noTextView.setText("");
 			chartView.setImageDrawable(context.getResources().getDrawable(android.R.drawable.ic_delete));
 		} else {
-		    stockNameTV.setText(stockInfo.getName());
+			stockNameTV.setText(stockInfo.getName());
 			double current = Double.parseDouble(stockInfo.getCurrent_price());
 			double closing_price = Double.parseDouble(stockInfo.getClosing_price());
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -77,8 +78,8 @@ public class FocusedStockDetailFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				App.getDataHandler().setFocused(position,!App.getDataHandler().isFocused(position));
-				if(listener!=null){
+				App.getDataHandler().setFocused(position, !App.getDataHandler().isFocused(position));
+				if (listener != null) {
 					listener.onFocusClicked();
 				}
 			}
@@ -88,8 +89,7 @@ public class FocusedStockDetailFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(listener!=null)
-				{
+				if (listener != null) {
 					listener.onCloseClicked();
 				}
 			}
@@ -101,8 +101,10 @@ public class FocusedStockDetailFragment extends Fragment{
 	public void setStockInfo(int position) {
 		this.position = position;
 	}
-public interface StockDetailFragmentButtonClickListener{
-	public void onFocusClicked();
-	public void onCloseClicked();
-}
+
+	public interface StockDetailFragmentButtonClickListener {
+		public void onFocusClicked();
+
+		public void onCloseClicked();
+	}
 }
