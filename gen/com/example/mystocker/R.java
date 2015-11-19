@@ -34,42 +34,44 @@ public final class R {
         public static final int settingsicon=0x7f020003;
     }
     public static final class id {
-        public static final int action_add=0x7f0b0022;
+        public static final int action_add=0x7f0b0024;
         public static final int action_add_actextview=0x7f0b0000;
         public static final int action_add_imagebutton=0x7f0b0001;
-        public static final int baselayout=0x7f0b0007;
-        public static final int chart_view=0x7f0b001c;
-        public static final int closeButton=0x7f0b001e;
-        public static final int closing_price=0x7f0b0017;
-        public static final int current=0x7f0b000f;
-        public static final int current_label=0x7f0b0011;
-        public static final int day_high=0x7f0b001b;
-        public static final int day_high_label=0x7f0b001a;
-        public static final int day_low=0x7f0b0019;
-        public static final int day_low_label=0x7f0b0018;
-        public static final int focusButton=0x7f0b001d;
+        public static final int baselayout=0x7f0b0008;
+        public static final int chart_view=0x7f0b001e;
+        public static final int closeButton=0x7f0b0020;
+        public static final int closing_price=0x7f0b0019;
+        public static final int current=0x7f0b0010;
+        public static final int current_label=0x7f0b0013;
+        public static final int day_high=0x7f0b001d;
+        public static final int day_high_label=0x7f0b001c;
+        public static final int day_low=0x7f0b001b;
+        public static final int day_low_label=0x7f0b001a;
+        public static final int focusButton=0x7f0b001f;
+        public static final int frag_container=0x7f0b0007;
         public static final int indicatorGrid=0x7f0b0005;
         public static final int indicatorImg=0x7f0b0004;
         public static final int indicatorTV=0x7f0b0006;
-        public static final int layer1=0x7f0b0008;
-        public static final int layer2=0x7f0b000a;
-        public static final int layer3=0x7f0b000c;
-        public static final int name=0x7f0b000e;
-        public static final int no=0x7f0b0013;
-        public static final int no_label=0x7f0b0012;
-        public static final int open_label=0x7f0b0014;
-        public static final int opening_price=0x7f0b0015;
+        public static final int layer1=0x7f0b0009;
+        public static final int layer2=0x7f0b000b;
+        public static final int layer3=0x7f0b000d;
+        public static final int name=0x7f0b000f;
+        public static final int no=0x7f0b0015;
+        public static final int no_label=0x7f0b0014;
+        public static final int open_label=0x7f0b0016;
+        public static final int opening_price=0x7f0b0017;
         public static final int pager=0x7f0b0003;
-        public static final int percent=0x7f0b0010;
-        public static final int remove_button=0x7f0b0009;
+        public static final int percent=0x7f0b0011;
+        public static final int remove_button=0x7f0b000a;
         public static final int seekBar1=0x7f0b0002;
-        public static final int settings=0x7f0b0023;
-        public static final int stocklist=0x7f0b0020;
-        public static final int stocklistempty=0x7f0b0021;
-        public static final int swipeContainer=0x7f0b001f;
-        public static final int symbol=0x7f0b000d;
-        public static final int view_button=0x7f0b000b;
-        public static final int volume_label=0x7f0b0016;
+        public static final int settings=0x7f0b0025;
+        public static final int stock_name=0x7f0b0012;
+        public static final int stocklist=0x7f0b0022;
+        public static final int stocklistempty=0x7f0b0023;
+        public static final int swipeContainer=0x7f0b0021;
+        public static final int symbol=0x7f0b000e;
+        public static final int view_button=0x7f0b000c;
+        public static final int volume_label=0x7f0b0018;
     }
     public static final class integer {
         public static final int page_num=0x7f070000;
@@ -79,9 +81,10 @@ public final class R {
         public static final int actionviewtest=0x7f030001;
         public static final int activity_main=0x7f030002;
         public static final int indicator_item=0x7f030003;
-        public static final int quote_cell=0x7f030004;
-        public static final int quote_detail=0x7f030005;
-        public static final int stocklist_frag=0x7f030006;
+        public static final int pager_frag=0x7f030004;
+        public static final int quote_cell=0x7f030005;
+        public static final int quote_detail=0x7f030006;
+        public static final int stocklist_frag=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;

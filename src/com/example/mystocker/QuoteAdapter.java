@@ -8,10 +8,17 @@ import android.widget.BaseAdapter;
 class QuoteAdapter extends BaseAdapter{
 	public DataHandler dataHandler;
 	Context context;
+	StockInfoCellView.CellInterface cellInterface;
+	
+	
 	public QuoteAdapter(DataHandler mDataHandler) {
 		dataHandler = mDataHandler;
 	}
 
+	public void setCellInterface(StockInfoCellView.CellInterface cellInterface){
+		this.cellInterface=cellInterface;
+	}
+	
 	public void setActivityContext(Context context)
 	{
 		this.context=context;
@@ -34,12 +41,15 @@ class QuoteAdapter extends BaseAdapter{
 		return arg0;
 	}
 
+	
+	
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		StockInfo quote = dataHandler.getQuoteFromIndex(arg0);
 		StockInfoCellView v = (StockInfoCellView)arg1;
 		if (v == null) {
 			v =new StockInfoCellView(context);
+			v.setCellInterface(cellInterface);
 		} 
         v.setStockInfo(quote, arg0);
 		return v;

@@ -2,24 +2,24 @@ package com.example.mystocker;
 
 import java.text.DecimalFormat;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class StockDetailDialogFragment extends DialogFragment {
+public class StockDetailFragment extends Fragment{
 	private int position;
 	private Context context;
-
-	public StockDetailDialogFragment(Context context) {
+    private StockDetailFragmentButtonClickListener listener;
+	public StockDetailFragment(Context context,StockDetailFragmentButtonClickListener listener) {
 		this.context = context;
+		this.listener=listener;
 	}
 
 	@Override
@@ -27,6 +27,7 @@ public class StockDetailDialogFragment extends DialogFragment {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.quote_detail, container, false);
 		StockInfo stockInfo = App.getDataHandler().getQuoteFromIndex(position);
+		TextView stockNameTv=(TextView)view.findViewById(R.id.stock_name);
 		TextView currentTV = (TextView) view.findViewById(R.id.current);
 		TextView noTextView = (TextView) view.findViewById(R.id.no);
 		TextView openTextView = (TextView) view.findViewById(R.id.opening_price);
@@ -43,7 +44,7 @@ public class StockDetailDialogFragment extends DialogFragment {
 
 		Button closeButton = (Button) view.findViewById(R.id.closeButton);
 		if (stockInfo.isBadNO()) {
-			this.getDialog().setTitle("¹ÉÆ±´úÂë´íÎó");
+			stockNameTv.setText("¹ÉÆ±´úÂë´íÎó");
 			currentTV.setText("");
 			openTextView.setText("");
 			closeTextView.setText("");
@@ -52,7 +53,7 @@ public class StockDetailDialogFragment extends DialogFragment {
 			noTextView.setText("");
 			chartView.setImageDrawable(context.getResources().getDrawable(android.R.drawable.ic_delete));
 		} else {
-			this.getDialog().setTitle(stockInfo.getName());
+			stockNameTv.setText(stockInfo.getName());
 			double current = Double.parseDouble(stockInfo.getCurrent_price());
 			double closing_price = Double.parseDouble(stockInfo.getClosing_price());
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -77,7 +78,9 @@ public class StockDetailDialogFragment extends DialogFragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				App.getDataHandler().setFocused(position,!App.getDataHandler().isFocused(position));
-				StockDetailDialogFragment.this.dismiss();
+				if(listener!=null){
+					listener.onFocusClicked();
+				}
 			}
 		});
 		closeButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +88,10 @@ public class StockDetailDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				StockDetailDialogFragment.this.dismiss();
+				if(listener!=null)
+				{
+					listener.onCloseClicked();
+				}
 			}
 		});
 
@@ -95,11 +101,8 @@ public class StockDetailDialogFragment extends DialogFragment {
 	public void setStockInfo(int position) {
 		this.position = position;
 	}
-
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		getDialog().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-	}
+public interface StockDetailFragmentButtonClickListener{
+	public void onFocusClicked();
+	public void onCloseClicked();
+}
 }

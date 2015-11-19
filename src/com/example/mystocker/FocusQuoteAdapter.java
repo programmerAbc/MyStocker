@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 public class FocusQuoteAdapter extends BaseAdapter{
 	public DataHandler dataHandler;
 	Context context;
+	FocusedStockInfoCellView.CellInterface cellInterface;
 	public FocusQuoteAdapter(DataHandler dataHandler) {
 		// TODO Auto-generated constructor stub
 		this.dataHandler=dataHandler;
@@ -15,6 +16,9 @@ public class FocusQuoteAdapter extends BaseAdapter{
 	
 	public void setActivityContext(Context context){
 		this.context=context;
+	}
+	public void setCellInterface(FocusedStockInfoCellView.CellInterface cellInterface){
+		this.cellInterface=cellInterface;
 	}
 	@Override
 	public int getCount() {
@@ -40,6 +44,7 @@ public class FocusQuoteAdapter extends BaseAdapter{
         FocusedStockInfoCellView v = (FocusedStockInfoCellView)convertView;
 		if (v == null) {
 			v =new FocusedStockInfoCellView(context);
+			v.setCellInterface(cellInterface);
 		} 
         v.setStockInfo(quote, position);
 		return v;

@@ -33,8 +33,7 @@ public class FocusedStockInfoCellView extends FrameLayout {
 	private AnimatorSet slideRightAS;
 	private StockInfo stockInfo = null;
 	private int position;
-	private StockInfoCellInterface sicInterface;
-	private StockDetailDialogFragment stockDetailDialogFragment;
+	private CellInterface cellInterface;
 	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
 
@@ -62,8 +61,8 @@ public class FocusedStockInfoCellView extends FrameLayout {
 		mContext = context;
 	}
 
-	public void setStockInfoCellInterface(StockInfoCellInterface sicInterface) {
-		this.sicInterface = sicInterface;
+	public void setCellInterface(CellInterface cellInterface) {
+		this.cellInterface = cellInterface;
 	}
 
 	private void initUI() {
@@ -81,11 +80,7 @@ public class FocusedStockInfoCellView extends FrameLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (sicInterface != null) {
-					sicInterface.removeStockInfo();
-				} else {
 					App.getDataHandler().removeFocusedQuoteByIndex(position);
-				}
 			}
 		});
 
@@ -95,11 +90,8 @@ public class FocusedStockInfoCellView extends FrameLayout {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (sicInterface != null) {
-					sicInterface.viewStockInfo();
-				} else {
-					stockDetailDialogFragment.setStockInfo(position);
-					stockDetailDialogFragment.show(((Activity) mContext).getFragmentManager(), "DetailFragmentDialog");
+				if (cellInterface != null) {
+					cellInterface.viewStockInfo(position);
 				}
 			}
 		});
@@ -127,7 +119,6 @@ public class FocusedStockInfoCellView extends FrameLayout {
 			}
 		};
 		gestureDetector = new GestureDetector(getContext(), simpleOnGestureListener);
-		stockDetailDialogFragment = new StockDetailDialogFragment(mContext);
 	}
 
 	private void initAnim() {
@@ -206,9 +197,7 @@ public class FocusedStockInfoCellView extends FrameLayout {
 		return false;
 	}
 
-	interface StockInfoCellInterface {
-		void viewStockInfo();
-
-		void removeStockInfo();
+	interface CellInterface {
+		void viewStockInfo(int position);
 	}
 }

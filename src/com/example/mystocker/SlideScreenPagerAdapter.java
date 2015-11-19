@@ -4,12 +4,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 public class SlideScreenPagerAdapter extends FragmentStatePagerAdapter{
 public static final int PAGE_NUM=2;
-private StockListFragment stockListFragment;
-private FocusedStockListFragment focusStockListFragment;
+private PagerFragment pagerFragment;
+private FocusedPagerFragment fpagerFragment;
 	public SlideScreenPagerAdapter(FragmentManager fm) {
 		super(fm);
-		stockListFragment=new StockListFragment();
-		focusStockListFragment=new FocusedStockListFragment();
+		pagerFragment=new PagerFragment();
+		fpagerFragment=new FocusedPagerFragment();
 	}
 
 	@Override
@@ -18,9 +18,9 @@ private FocusedStockListFragment focusStockListFragment;
 		switch(position)
 		{
 		case 0:
-			return stockListFragment;
+			return pagerFragment;
 		case 1:
-			return focusStockListFragment;
+			return fpagerFragment;
 		default:return null;
 		}
 		
