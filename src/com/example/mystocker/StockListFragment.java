@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ public class StockListFragment extends Fragment {
 	private Handler stopRefreshHandler;
     private StockInfoCellView.CellInterface cellInterface;
 	
+    public StockListFragment()
+    {
+    }
+    
     public StockListFragment(StockInfoCellView.CellInterface cellInterface) {
-		this.cellInterface = cellInterface;
+    	this.cellInterface = cellInterface;
 	}
     
     
@@ -58,23 +63,23 @@ public class StockListFragment extends Fragment {
 			}
 		});
 
-		swipeRefreshLayout.post(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				swipeRefreshLayout.setRefreshing(true);
-				App.getDataHandler().refreshStocks();
-				stopRefreshHandler.postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						swipeRefreshLayout.setRefreshing(false);
-					}
-				}, 1500);
-			}
-		});
+//		swipeRefreshLayout.post(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				swipeRefreshLayout.setRefreshing(true);
+//				App.getDataHandler().refreshStocks();
+//				stopRefreshHandler.postDelayed(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						swipeRefreshLayout.setRefreshing(false);
+//					}
+//				}, 1500);
+//			}
+//		});
 
 		return view;
 	}

@@ -17,6 +17,9 @@ public class FocusedStockListFragment extends Fragment {
 	private Handler stopRefreshHandler;
     private FocusedStockInfoCellView.CellInterface cellInterface;
 	
+    public FocusedStockListFragment(){
+    }
+    
     public FocusedStockListFragment(FocusedStockInfoCellView.CellInterface cellInterface) {
 		// TODO Auto-generated constructor stub
     	this.cellInterface=cellInterface;
@@ -58,23 +61,23 @@ public class FocusedStockListFragment extends Fragment {
 			}
 		});
 
-		swipeRefreshLayout.post(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				swipeRefreshLayout.setRefreshing(true);
-				App.getDataHandler().refreshStocks();
-				stopRefreshHandler.postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						swipeRefreshLayout.setRefreshing(false);
-					}
-				}, 1500);
-			}
-		});
+//		swipeRefreshLayout.post(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				swipeRefreshLayout.setRefreshing(true);
+//				App.getDataHandler().refreshStocks();
+//				stopRefreshHandler.postDelayed(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						// TODO Auto-generated method stub
+//						swipeRefreshLayout.setRefreshing(false);
+//					}
+//				}, 1500);
+//			}
+//		});
 		return view;
 	}
 }

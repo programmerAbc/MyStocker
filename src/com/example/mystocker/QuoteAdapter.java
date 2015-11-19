@@ -1,6 +1,7 @@
 package com.example.mystocker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,6 +18,11 @@ class QuoteAdapter extends BaseAdapter{
 
 	public void setCellInterface(StockInfoCellView.CellInterface cellInterface){
 		this.cellInterface=cellInterface;
+		if(cellInterface==null)
+		{
+			Log.i("DESTROY", "cellInterface==null");
+		}
+		
 	}
 	
 	public void setActivityContext(Context context)

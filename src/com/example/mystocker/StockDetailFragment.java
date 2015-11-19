@@ -17,6 +17,10 @@ public class StockDetailFragment extends Fragment{
 	private int position;
 	private Context context;
     private StockDetailFragmentButtonClickListener listener;
+    public StockDetailFragment(){
+    	
+    }
+    
 	public StockDetailFragment(Context context,StockDetailFragmentButtonClickListener listener) {
 		this.context = context;
 		this.listener=listener;

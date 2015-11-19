@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public class StockInfoCellView extends FrameLayout {
 	private TextView nameTV;
 	private TextView currentTV;
 	private TextView percentTV;
-	
+
 	private View layer2;
 	private View layer3;
 	private ImageButton removeButton;
@@ -34,7 +35,7 @@ public class StockInfoCellView extends FrameLayout {
 	private AnimatorSet slideLeftAS;
 	private AnimatorSet slideRightAS;
 	private StockInfo stockInfo = null;
-    private int position;
+	private int position;
 	private CellInterface cellInterface;
 	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
@@ -44,7 +45,7 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
 	public StockInfoCellView(Context context, AttributeSet attrs) {
@@ -52,7 +53,7 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
 	public StockInfoCellView(Context context) {
@@ -60,13 +61,19 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext=context;
+		mContext = context;
 	}
 
-	public void setCellInterface(CellInterface cellInterface){
-		this.cellInterface=cellInterface;
+	public void setCellInterface(CellInterface cellInterface) {
+		if (cellInterface == null) {
+			Log.i("DESTROY", "stockinfocellview cellinterface == null");
+		} else {
+			Log.i("DESTROY", "stockinfocellview cellinterface != null");
+		}
+		this.cellInterface = cellInterface;
+
 	}
-	
+
 	private void initUI() {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		inflater.inflate(R.layout.quote_cell, this);
@@ -78,25 +85,25 @@ public class StockInfoCellView extends FrameLayout {
 		symbolTV = (TextView) findViewById(R.id.symbol);
 		removeButton = (ImageButton) findViewById(R.id.remove_button);
 		removeButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-			  
-			    	App.getDataHandler().removeQuoteByIndex(position);
-			 
+
+				App.getDataHandler().removeQuoteByIndex(position);
+
 			}
 		});
-		
+
 		viewButton = (ImageButton) findViewById(R.id.view_button);
-        viewButton.setOnClickListener(new View.OnClickListener() {
-			
+		viewButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				  if(cellInterface!=null){
-				    	cellInterface.viewStockInfo(position);
-				  }
+				if (cellInterface != null) {
+					cellInterface.viewStockInfo(position);
+				}
 			}
 		});
 		simpleOnGestureListener = new SimpleOnGestureListener() {
@@ -104,19 +111,16 @@ public class StockInfoCellView extends FrameLayout {
 			public boolean onDown(MotionEvent event) {
 				return true;
 			}
-			
+
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
-				if(distanceX<0)
-				{
+				if (distanceX < 0) {
 					if (slideRightAS != null) {
 						slideRightAS.start();
 						stockInfo.setSlideLeft(false);
 					}
-				}
-				else
-				{
+				} else {
 					if (slideLeftAS != null) {
 						slideLeftAS.start();
 						stockInfo.setSlideLeft(true);
@@ -164,15 +168,12 @@ public class StockInfoCellView extends FrameLayout {
 
 	public void setStockInfo(StockInfo stockInfo, int position) {
 		this.stockInfo = stockInfo;
-		this.position=position;
-		
+		this.position = position;
+
 		symbolTV.setText(stockInfo.getNo());
-		if(stockInfo.isFocused())
-		{
+		if (stockInfo.isFocused()) {
 			symbolTV.setTextColor(0xffff1111);
-		}
-		else
-		{
+		} else {
 			symbolTV.setTextColor(0xff000000);
 		}
 		nameTV.setText(stockInfo.getName());

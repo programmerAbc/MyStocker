@@ -18,6 +18,9 @@ public class FocusedStockDetailFragment extends Fragment {
 	private Context context;
 	private StockDetailFragmentButtonClickListener listener;
 
+	public FocusedStockDetailFragment() {
+		// TODO Auto-generated constructor stub
+	}
 	public FocusedStockDetailFragment(Context context, StockDetailFragmentButtonClickListener listener) {
 		this.context = context;
 		this.listener = listener;
