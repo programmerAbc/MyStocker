@@ -14,10 +14,11 @@ public class StockDatabase extends SQLiteOpenHelper {
 	public static final String DATABASE_NAME = "StockDatabase.db";
 	private static final String TABLE_NAME = "stocktable";
 	private static final String STOCK_COLUMN = "stock";
-	public static final int DATABASE_VERSION = 1;
-	private static final String CREATE_TABLE = "create table if not exists " + TABLE_NAME + " (_id integer primary key autoincrement, " + STOCK_COLUMN + " text not null);";
-	private static final String INSERT_DATA = "insert into " + TABLE_NAME + "(" + STOCK_COLUMN + ") values(?);";
-	private static final String GET_DATA = "select " + STOCK_COLUMN + " from " + TABLE_NAME + ";";
+	private static final String FOCUS_COLUMN = "focus";
+	public static final int DATABASE_VERSION = 2;
+	private static final String CREATE_TABLE = "create table if not exists " + TABLE_NAME + " (_id integer primary key autoincrement, " + STOCK_COLUMN + " text not null , "+ FOCUS_COLUMN +" integer not null);";
+	private static final String INSERT_DATA = "insert into " + TABLE_NAME + "(" + STOCK_COLUMN +","+ FOCUS_COLUMN + ") values(?,?);";
+	private static final String GET_DATA = "select * from " + TABLE_NAME + ";";
 	private static final String CLEAR_DATA = "delete from " + TABLE_NAME + ";";
 	private static final String DROP_TABLE="drop table if exists " + TABLE_NAME + ";";
 	
@@ -52,19 +53,17 @@ public class StockDatabase extends SQLiteOpenHelper {
 		}
 		while (cursor.moveToNext()) {
 			StockInfo sinfo = new StockInfo();
-			sinfo.setNo(cursor.getString(0));
+			sinfo.setNo(cursor.getString(1));
+			int focused=cursor.getInt(2);
+			sinfo.setFocused(focused==1);
 			stocks.add(sinfo);
 		}
 		return stocks;
 	}
 
 	public void insertStocks(ArrayList<StockInfo> stocks) {
-		if (stocks.isEmpty() == false) {
-			ArrayList<String> stockNOs = new ArrayList<String>();
-			for (StockInfo sinfo : stocks) {
-				stockNOs.add(sinfo.getNo());
-			}
-			new InsertAsyncTask().execute(stockNOs);
+		if (stocks!=null&&stocks.isEmpty() == false) {
+			new InsertAsyncTask().execute(stocks);
 		} else {
 			SQLiteDatabase db = this.getWritableDatabase();
 			db.execSQL(DROP_TABLE);
@@ -73,19 +72,19 @@ public class StockDatabase extends SQLiteOpenHelper {
 		}
 	}
 
-	private class InsertAsyncTask extends AsyncTask<ArrayList<String>, Integer, Integer> {
+	private class InsertAsyncTask extends AsyncTask<ArrayList<StockInfo>, Integer, Integer> {
 		@Override
-		protected Integer doInBackground(ArrayList<String>... params) {
+		protected Integer doInBackground(ArrayList<StockInfo>... params) {
 			// TODO Auto-generated method stub
 			SQLiteDatabase db = StockDatabase.this.getWritableDatabase();
-			ArrayList<String> stocks = params[0];
+			ArrayList<StockInfo> stocks = params[0];
 			int resultCode = -1;
 			db.beginTransaction();
 			db.execSQL(DROP_TABLE);
 			db.execSQL(CREATE_TABLE);
 			try {
-				for (String stock : stocks) {
-					db.execSQL(INSERT_DATA, new Object[] { stock });
+				for (StockInfo stock : stocks) {
+					db.execSQL(INSERT_DATA, new Object[] { stock.getNo(),stock.isFocused()?1:0});
 				}
 				db.setTransactionSuccessful();
 				resultCode = 1;

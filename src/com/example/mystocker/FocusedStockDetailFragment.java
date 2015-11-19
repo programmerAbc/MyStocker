@@ -78,7 +78,7 @@ public class FocusedStockDetailFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				App.getDataHandler().setFocused(position, !App.getDataHandler().isFocused(position));
+				App.getDataHandler().fresetFocused(position);
 				if (listener != null) {
 					listener.onFocusClicked();
 				}
