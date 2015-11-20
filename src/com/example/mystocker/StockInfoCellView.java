@@ -7,6 +7,8 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -14,6 +16,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -204,11 +207,23 @@ public class StockInfoCellView extends FrameLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		gestureDetector.onTouchEvent(ev);
-		return false;
+		int action = MotionEventCompat.getActionMasked(ev);
+		switch(action){
+		case MotionEvent.ACTION_MOVE:
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	interface CellInterface {
 		void viewStockInfo(int position);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		gestureDetector.onTouchEvent(event);
+		return true;
 	}
 }

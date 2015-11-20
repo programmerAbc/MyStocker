@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements OnSharedPreference
 	    mPager=(MyViewPager)findViewById(R.id.pager);
 	    mPagerAdapter=new SlideScreenPagerAdapter(getSupportFragmentManager());
 	    mPager.setAdapter(mPagerAdapter);
-	    mPager.setPageTransformer(true, new DepthPageTransformer());
+	   // mPager.setPageTransformer(true, new DepthPageTransformer());
 	    
 	    indicatorGridView=(GridView)findViewById(R.id.indicatorGrid);
 	    indicatorImg=(ImageView)findViewById(R.id.indicatorImg);

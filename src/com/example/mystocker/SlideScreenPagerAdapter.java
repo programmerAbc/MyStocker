@@ -23,7 +23,6 @@ private FocusedPagerFragment fpagerFragment;
 			return fpagerFragment;
 		default:return null;
 		}
-		
 	}
 
 	

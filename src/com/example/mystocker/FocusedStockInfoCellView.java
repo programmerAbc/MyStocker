@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -193,11 +194,23 @@ public class FocusedStockInfoCellView extends FrameLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		gestureDetector.onTouchEvent(ev);
-		return false;
+		int action = MotionEventCompat.getActionMasked(ev);
+		switch(action){
+		case MotionEvent.ACTION_MOVE:
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	interface CellInterface {
 		void viewStockInfo(int position);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		gestureDetector.onTouchEvent(event);
+		return true;
 	}
 }
