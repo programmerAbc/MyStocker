@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnSharedPreference
 	    mPager=(MyViewPager)findViewById(R.id.pager);
 	    mPagerAdapter=new SlideScreenPagerAdapter(getSupportFragmentManager());
 	    mPager.setAdapter(mPagerAdapter);
+	   //触控问题出在这里，可能是DepthPageTransformer改变了ViewPager原来的变换模式导致本该隐藏的View以透明的形式覆盖在应该可以看见的View的上方拦截了TouchEvent影响触控
 	   // mPager.setPageTransformer(true, new DepthPageTransformer());
 	    
 	    indicatorGridView=(GridView)findViewById(R.id.indicatorGrid);
