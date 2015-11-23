@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnSharedPreference
 	    mPager=(MyViewPager)findViewById(R.id.pager);
 	    mPagerAdapter=new SlideScreenPagerAdapter(getSupportFragmentManager());
 	    mPager.setAdapter(mPagerAdapter);
+	    //问题出在这里，可能是因为DepthPageTransformer的变换导致本该消失的page以不可见的形式浮于当前显示的页面的上方拦截了触摸事件
 	    mPager.setPageTransformer(true, new DepthPageTransformer());
 	    
 	    indicatorGridView=(GridView)findViewById(R.id.indicatorGrid);
