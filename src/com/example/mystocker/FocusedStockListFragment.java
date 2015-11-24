@@ -31,8 +31,7 @@ public class FocusedStockListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		stopRefreshHandler = new Handler(Looper.getMainLooper());
 		fquoteAdapter = (FocusQuoteAdapter) App.getDataHandler().getFocusedAdapter();
-		fquoteAdapter.setCellInterface(cellInterface);
-		fquoteAdapter.setActivityContext(getActivity());    
+		fquoteAdapter.setCellInterface(cellInterface);    
 	}
 
 	@Override

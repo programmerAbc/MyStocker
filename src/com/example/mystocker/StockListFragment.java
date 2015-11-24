@@ -34,7 +34,6 @@ public class StockListFragment extends Fragment {
 		stopRefreshHandler = new Handler(Looper.getMainLooper());
 		quoteAdapter = (QuoteAdapter) App.getDataHandler().getAdatper();
 		quoteAdapter.setCellInterface(cellInterface);
-		quoteAdapter.setActivityContext(getActivity());
 	}
 
 	@Override

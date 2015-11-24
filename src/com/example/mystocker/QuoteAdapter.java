@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 
 class QuoteAdapter extends BaseAdapter{
 	public DataHandler dataHandler;
-	Context context;
+	
 	StockInfoCellView.CellInterface cellInterface;
 	
 	
@@ -25,10 +25,6 @@ class QuoteAdapter extends BaseAdapter{
 		
 	}
 	
-	public void setActivityContext(Context context)
-	{
-		this.context=context;
-	}
 	
 	@Override
 	public int getCount() {
@@ -50,14 +46,14 @@ class QuoteAdapter extends BaseAdapter{
 	
 	
 	@Override
-	public View getView(int arg0, View arg1, ViewGroup arg2) {
-		StockInfo quote = dataHandler.getQuoteFromIndex(arg0);
-		StockInfoCellView v = (StockInfoCellView)arg1;
+	public View getView(int position, View convertView, ViewGroup parent) {
+		StockInfo quote = dataHandler.getQuoteFromIndex(position);
+		StockInfoCellView v = (StockInfoCellView)convertView;
 		if (v == null) {
-			v =new StockInfoCellView(context);
+			v =new StockInfoCellView(parent.getContext());
 			v.setCellInterface(cellInterface);
 		} 
-        v.setStockInfo(quote, arg0);
+        v.setStockInfo(quote, position);
 		return v;
 	}
 

@@ -1,22 +1,18 @@
 package com.example.mystocker;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class FocusQuoteAdapter extends BaseAdapter{
 	public DataHandler dataHandler;
-	Context context;
+	
 	FocusedStockInfoCellView.CellInterface cellInterface;
 	public FocusQuoteAdapter(DataHandler dataHandler) {
 		// TODO Auto-generated constructor stub
 		this.dataHandler=dataHandler;
 	}
 	
-	public void setActivityContext(Context context){
-		this.context=context;
-	}
 	public void setCellInterface(FocusedStockInfoCellView.CellInterface cellInterface){
 		this.cellInterface=cellInterface;
 	}
@@ -43,7 +39,7 @@ public class FocusQuoteAdapter extends BaseAdapter{
 		StockInfo quote = dataHandler.getFocusedQuoteFromIndex(position);
         FocusedStockInfoCellView v = (FocusedStockInfoCellView)convertView;
 		if (v == null) {
-			v =new FocusedStockInfoCellView(context);
+			v =new FocusedStockInfoCellView(parent.getContext());
 			v.setCellInterface(cellInterface);
 		} 
         v.setStockInfo(quote, position);
