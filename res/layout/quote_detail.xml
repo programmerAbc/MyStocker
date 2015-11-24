@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="#EFFF"
+    android:clickable="true"
     >
         <TextView
             android:id="@+id/stock_name"

@@ -2,12 +2,12 @@ package com.example.mystocker;
 
 import java.text.DecimalFormat;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,9 +16,7 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -42,6 +40,7 @@ public class StockInfoCellView extends FrameLayout {
 	private CellInterface cellInterface;
 	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
+	private boolean enableSlide = true;
 
 	public StockInfoCellView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -112,19 +111,26 @@ public class StockInfoCellView extends FrameLayout {
 		simpleOnGestureListener = new SimpleOnGestureListener() {
 			@Override
 			public boolean onDown(MotionEvent event) {
+				Log.i("SLIDE", "ondown");
 				return true;
 			}
 
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
-				if (distanceX < 0) {
-					if (slideRightAS != null) {
+				float scrollDistance = e2.getX() - e1.getX();
+				Log.i("SLIDE", e2.getX() + "," + e1.getX());
+
+				if (scrollDistance > 0) {
+					if (slideRightAS != null && stockInfo.isSlideLeft()) {
+						Log.i("SLIDE", "right,");
 						slideRightAS.start();
 						stockInfo.setSlideLeft(false);
+
 					}
-				} else {
-					if (slideLeftAS != null) {
+				} else if (scrollDistance < 0) {
+					if (slideLeftAS != null && stockInfo.isSlideLeft() == false) {
+						Log.i("SLIDE", "left,");
 						slideLeftAS.start();
 						stockInfo.setSlideLeft(true);
 					}
@@ -143,12 +149,64 @@ public class StockInfoCellView extends FrameLayout {
 		slideLeftAnim2.setInterpolator(new OvershootInterpolator());
 		slideLeftAS.play(slideLeftAnim1).with(slideLeftAnim2);
 		slideLeftAS.setDuration(300);
+		slideLeftAS.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide = false;
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide = true;
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		slideRightAS = new AnimatorSet();
 		ObjectAnimator slideRightAnim1 = ObjectAnimator.ofFloat(layer3, "translationX", 0);
 		ObjectAnimator slideRightAnim2 = ObjectAnimator.ofFloat(layer2, "translationX", 0);
 		slideRightAS.play(slideRightAnim1).with(slideRightAnim2);
 		slideRightAS.setDuration(300);
+		slideRightAS.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide = false;
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide = true;
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 	}
 
 	public void adjustPosition() {
@@ -207,23 +265,14 @@ public class StockInfoCellView extends FrameLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		int action = MotionEventCompat.getActionMasked(ev);
-		switch(action){
-		case MotionEvent.ACTION_MOVE:
-			return true;
-		default:
+		if (enableSlide == false) {
 			return false;
 		}
+		gestureDetector.onTouchEvent(ev);
+		return false;
 	}
 
 	interface CellInterface {
 		void viewStockInfo(int position);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		gestureDetector.onTouchEvent(event);
-		return true;
 	}
 }
