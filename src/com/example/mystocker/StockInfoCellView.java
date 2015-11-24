@@ -38,7 +38,6 @@ public class StockInfoCellView extends FrameLayout {
 	private StockInfo stockInfo = null;
 	private int position;
 	private CellInterface cellInterface;
-	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
 	private boolean enableSlide = true;
 
@@ -119,18 +118,14 @@ public class StockInfoCellView extends FrameLayout {
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
 				float scrollDistance = e2.getX() - e1.getX();
-				Log.i("SLIDE", e2.getX() + "," + e1.getX());
 
 				if (scrollDistance > 0) {
 					if (slideRightAS != null && stockInfo.isSlideLeft()) {
-						Log.i("SLIDE", "right,");
 						slideRightAS.start();
 						stockInfo.setSlideLeft(false);
-
 					}
 				} else if (scrollDistance < 0) {
 					if (slideLeftAS != null && stockInfo.isSlideLeft() == false) {
-						Log.i("SLIDE", "left,");
 						slideLeftAS.start();
 						stockInfo.setSlideLeft(true);
 					}
@@ -265,10 +260,9 @@ public class StockInfoCellView extends FrameLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		if (enableSlide == false) {
-			return false;
+		if (enableSlide) {
+			gestureDetector.onTouchEvent(ev);
 		}
-		gestureDetector.onTouchEvent(ev);
 		return false;
 	}
 
