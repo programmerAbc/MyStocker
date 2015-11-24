@@ -46,7 +46,6 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public StockInfoCellView(Context context, AttributeSet attrs) {
@@ -54,7 +53,6 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public StockInfoCellView(Context context) {
@@ -62,7 +60,6 @@ public class StockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public void setCellInterface(CellInterface cellInterface) {
