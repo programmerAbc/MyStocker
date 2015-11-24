@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:background="@android:drawable/dialog_holo_light_frame"
         android:orientation="vertical" 
+        android:clickable="true"
         >
 
         <ImageButton
@@ -28,7 +29,7 @@
         android:layout_height="match_parent"
         android:background="@android:drawable/dialog_holo_light_frame"
         android:orientation="vertical" 
-        
+        android:clickable="true"
         >
 
         <ImageButton
