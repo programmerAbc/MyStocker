@@ -80,6 +80,7 @@ public class MainActivity extends FragmentActivity implements OnSharedPreference
 			}
 		});
      	PreferenceManager.getDefaultSharedPreferences(mContext).registerOnSharedPreferenceChangeListener(this);
+     	App.getDataHandler().refreshStocks();
 	}
 
 	private static final int SHOW_PREFERENCES = 1;

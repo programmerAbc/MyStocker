@@ -1,6 +1,7 @@
 package com.example.mystocker;
 
 import android.app.Application;
+import android.util.Log;
 
 public class App extends Application {
 	private static DataHandler dataHandler;

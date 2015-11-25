@@ -135,6 +135,7 @@ public class DataHandler {
 	}
 
 	public void refreshStocks() {
+		Log.i("REFRESH","refresh stocks!!!!!!");
 		context.startService(new Intent(context, StockUpdateService.class));
 	}
 

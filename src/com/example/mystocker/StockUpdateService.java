@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 public class StockUpdateService extends IntentService {
 	private static final String QUERY_URL = "http://hq.sinajs.cn/list=";
@@ -48,6 +49,7 @@ public class StockUpdateService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		// TODO Auto-generated method stub
 		refreshStock();
+		Log.i("REFRESH", "refreshing!!!");
 	}
 
 	public void refreshStock() {
