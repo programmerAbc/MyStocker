@@ -117,6 +117,7 @@ public class StockProvider extends ContentProvider{
 		stockInfo.setBadNO(values.getAsBoolean(KEY_STOCK_BAD_NO));
         stockInfo.setChart(values.getAsByteArray(KEY_STOCK_CHART));
 		App.getDataHandler().updateStock(stockInfo);
+	    
 		getContext().getContentResolver().notifyChange(uri, null);
 		return 0;
 	}

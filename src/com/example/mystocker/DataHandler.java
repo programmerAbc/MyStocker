@@ -85,6 +85,9 @@ public class DataHandler {
 			if (stockinfo.equals(sinfo)) {
 				stockinfo.copyFrom(sinfo);
 				dataHasChanged = true;
+				if(stockinfo.isFocused()){
+				NotificationFactory.Notify(context, sinfo);
+				}
 				break;
 			}
 		}
