@@ -63,13 +63,7 @@ public class StockInfoCellView extends FrameLayout {
 	}
 
 	public void setCellInterface(CellInterface cellInterface) {
-		if (cellInterface == null) {
-			Log.i("DESTROY", "stockinfocellview cellinterface == null");
-		} else {
-			Log.i("DESTROY", "stockinfocellview cellinterface != null");
-		}
 		this.cellInterface = cellInterface;
-
 	}
 
 	private void initUI() {

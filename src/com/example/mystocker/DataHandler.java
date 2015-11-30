@@ -25,7 +25,8 @@ public class DataHandler {
 	Intent stockUpdateServiceIntent;
 	PendingIntent stockUpdateServicePendingIntent;
 	ArrayAdapter<String> suggestionAdapter;
-
+    private boolean enableNotify=false;
+	
 	public DataHandler(Context context) {
 		this.context = context;
 		handler = new Handler(Looper.getMainLooper());
@@ -85,8 +86,9 @@ public class DataHandler {
 			if (stockinfo.equals(sinfo)) {
 				stockinfo.copyFrom(sinfo);
 				dataHasChanged = true;
-				if(stockinfo.isFocused()){
+				if(enableNotify&&stockinfo.isFocused()){
 				NotificationFactory.Notify(context, sinfo);
+				enableNotify=false;
 				}
 				break;
 			}
@@ -138,7 +140,7 @@ public class DataHandler {
 	}
 
 	public void refreshStocks() {
-		Log.i("REFRESH","refresh stocks!!!!!!");
+		enableNotify=true;
 		context.startService(new Intent(context, StockUpdateService.class));
 	}
 

@@ -1,6 +1,9 @@
 package com.example.mystocker;
 
 import java.text.DecimalFormat;
+
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -35,15 +38,14 @@ public class FocusedStockInfoCellView extends FrameLayout {
 	private StockInfo stockInfo = null;
 	private int position;
 	private CellInterface cellInterface;
-	private Context mContext;
 	private final int[] backgroundColor = { Color.rgb(119, 138, 170), Color.rgb(48, 92, 131) };
-
+	private boolean enableSlide = true;
+	
 	public FocusedStockInfoCellView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public FocusedStockInfoCellView(Context context, AttributeSet attrs) {
@@ -51,7 +53,6 @@ public class FocusedStockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public FocusedStockInfoCellView(Context context) {
@@ -59,7 +60,6 @@ public class FocusedStockInfoCellView extends FrameLayout {
 		// TODO Auto-generated constructor stub
 		initUI();
 		initAnim();
-		mContext = context;
 	}
 
 	public void setCellInterface(CellInterface cellInterface) {
@@ -105,15 +105,16 @@ public class FocusedStockInfoCellView extends FrameLayout {
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 				// TODO Auto-generated method stub
-				if (distanceX < 0) {
-					if (slideRightAS != null) {
+				float scrollDistance = e2.getX() - e1.getX();
+				if (scrollDistance > 0) {
+					if (slideRightAS != null && stockInfo.isFocusedSlideLeft()) {
 						slideRightAS.start();
-						stockInfo.setSlideLeft(false);
+						stockInfo.setFocusedSlideLeft(false);
 					}
-				} else {
-					if (slideLeftAS != null) {
+				} else if (scrollDistance < 0) {
+					if (slideLeftAS != null && stockInfo.isFocusedSlideLeft() == false) {
 						slideLeftAS.start();
-						stockInfo.setSlideLeft(true);
+						stockInfo.setFocusedSlideLeft(true);
 					}
 				}
 				return true;
@@ -130,16 +131,69 @@ public class FocusedStockInfoCellView extends FrameLayout {
 		slideLeftAnim2.setInterpolator(new OvershootInterpolator());
 		slideLeftAS.play(slideLeftAnim1).with(slideLeftAnim2);
 		slideLeftAS.setDuration(300);
+        slideLeftAS.addListener(new AnimatorListener(){
 
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide=false;
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide=true;
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		
 		slideRightAS = new AnimatorSet();
 		ObjectAnimator slideRightAnim1 = ObjectAnimator.ofFloat(layer3, "translationX", 0);
 		ObjectAnimator slideRightAnim2 = ObjectAnimator.ofFloat(layer2, "translationX", 0);
 		slideRightAS.play(slideRightAnim1).with(slideRightAnim2);
 		slideRightAS.setDuration(300);
+		slideRightAS.addListener(new AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide=false;
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				// TODO Auto-generated method stub
+				enableSlide=true;
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 	public void adjustPosition() {
-		if (stockInfo.isSlideLeft()) {
+		if (stockInfo.isFocusedSlideLeft()) {
 			setPosition();
 		} else {
 			resetPosition();
@@ -194,23 +248,13 @@ public class FocusedStockInfoCellView extends FrameLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		int action = MotionEventCompat.getActionMasked(ev);
-		switch(action){
-		case MotionEvent.ACTION_MOVE:
-			return true;
-		default:
-			return false;
+		if (enableSlide) {
+			gestureDetector.onTouchEvent(ev);
 		}
+		return false;
 	}
 
 	interface CellInterface {
 		void viewStockInfo(int position);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		gestureDetector.onTouchEvent(event);
-		return true;
 	}
 }
