@@ -23,7 +23,8 @@ int drawable ic_launcher 0x7f020000
 int drawable menu_background 0x7f020001
 int drawable menu_item_selected 0x7f020002
 int drawable settingsicon 0x7f020003
-int id action_add 0x7f0b003b
+int drawable widgetpreview 0x7f020004
+int id action_add 0x7f0b003f
 int id action_add_actextview 0x7f0b0012
 int id action_add_imagebutton 0x7f0b0013
 int id alignBounds 0x7f0b0002
@@ -68,7 +69,7 @@ int id percent 0x7f0b0028
 int id remove_button 0x7f0b0021
 int id right 0x7f0b000f
 int id seekBar1 0x7f0b0014
-int id settings 0x7f0b003c
+int id settings 0x7f0b0040
 int id start 0x7f0b0010
 int id status_backbutton 0x7f0b001b
 int id status_forwardbutton 0x7f0b001c
@@ -84,6 +85,10 @@ int id top 0x7f0b0011
 int id vertical 0x7f0b0001
 int id view_button 0x7f0b0023
 int id volume_label 0x7f0b002f
+int id widgetNextButton 0x7f0b003e
+int id widgetPreviousButton 0x7f0b003d
+int id widgetStockChartIV 0x7f0b003c
+int id widgetStockNameTV 0x7f0b003b
 int integer page_num 0x7f070000
 int layout action_add_view 0x7f030000
 int layout actionviewtest 0x7f030001
@@ -95,6 +100,7 @@ int layout pager_frag 0x7f030006
 int layout quote_cell 0x7f030007
 int layout quote_detail 0x7f030008
 int layout stocklist_frag 0x7f030009
+int layout widgetlayout 0x7f03000a
 int menu main 0x7f0a0000
 int string action_settings 0x7f080002
 int string add 0x7f080006
@@ -142,4 +148,5 @@ int styleable GridLayout_Layout_layout_row 7
 int styleable GridLayout_Layout_layout_rowSpan 8
 int styleable GridLayout_Layout_layout_rowWeight 9
 int xml preference_header 0x7f040000
-int xml userpreferences 0x7f040001
+int xml stockerwidgetprovider 0x7f040001
+int xml userpreferences 0x7f040002

@@ -255,9 +255,10 @@ containing a value of this type.
         public static final int menu_background=0x7f020001;
         public static final int menu_item_selected=0x7f020002;
         public static final int settingsicon=0x7f020003;
+        public static final int widgetpreview=0x7f020004;
     }
     public static final class id {
-        public static final int action_add=0x7f0b003b;
+        public static final int action_add=0x7f0b003f;
         public static final int action_add_actextview=0x7f0b0012;
         public static final int action_add_imagebutton=0x7f0b0013;
         public static final int alignBounds=0x7f0b0002;
@@ -302,7 +303,7 @@ containing a value of this type.
         public static final int remove_button=0x7f0b0021;
         public static final int right=0x7f0b000f;
         public static final int seekBar1=0x7f0b0014;
-        public static final int settings=0x7f0b003c;
+        public static final int settings=0x7f0b0040;
         public static final int start=0x7f0b0010;
         public static final int status_backbutton=0x7f0b001b;
         public static final int status_forwardbutton=0x7f0b001c;
@@ -318,6 +319,10 @@ containing a value of this type.
         public static final int vertical=0x7f0b0001;
         public static final int view_button=0x7f0b0023;
         public static final int volume_label=0x7f0b002f;
+        public static final int widgetNextButton=0x7f0b003e;
+        public static final int widgetPreviousButton=0x7f0b003d;
+        public static final int widgetStockChartIV=0x7f0b003c;
+        public static final int widgetStockNameTV=0x7f0b003b;
     }
     public static final class integer {
         public static final int page_num=0x7f070000;
@@ -333,6 +338,7 @@ containing a value of this type.
         public static final int quote_cell=0x7f030007;
         public static final int quote_detail=0x7f030008;
         public static final int stocklist_frag=0x7f030009;
+        public static final int widgetlayout=0x7f03000a;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -389,7 +395,8 @@ containing a value of this type.
     }
     public static final class xml {
         public static final int preference_header=0x7f040000;
-        public static final int userpreferences=0x7f040001;
+        public static final int stockerwidgetprovider=0x7f040001;
+        public static final int userpreferences=0x7f040002;
     }
     public static final class styleable {
         /** Attributes that can be used with a GridLayout.

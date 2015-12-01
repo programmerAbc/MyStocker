@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -26,7 +27,7 @@ public class DataHandler {
 	PendingIntent stockUpdateServicePendingIntent;
 	ArrayAdapter<String> suggestionAdapter;
     private boolean enableNotify=false;
-	
+	private int currentFocusedStockInfoIndex=-1;
 	public DataHandler(Context context) {
 		this.context = context;
 		handler = new Handler(Looper.getMainLooper());
@@ -50,6 +51,7 @@ public class DataHandler {
 
 	private void populateFocusedStockInfos() {
 		fstockInfos.clear();
+		currentFocusedStockInfoIndex=-1;
 		if (stockInfos != null && stockInfos.isEmpty() == false) {
 			for (StockInfo sinfo : stockInfos) {
 				if (sinfo.isFocused()) {
@@ -88,6 +90,11 @@ public class DataHandler {
 				dataHasChanged = true;
 				if(enableNotify&&stockinfo.isFocused()){
 				NotificationFactory.Notify(context, sinfo);
+				currentFocusedStockInfoIndex=-1;
+				Intent intent=new Intent(context,StockerWidgetProvider.class);
+				intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,StockerWidgetProvider.StockAppWidgetIds);
+				context.sendBroadcast(intent);
 				enableNotify=false;
 				}
 				break;
@@ -175,7 +182,32 @@ public class DataHandler {
 			return null;
 		}
 	}
+	
+	public StockInfo focusedNext()
+	{
+		StockInfo stockInfo=null;
+		if (fstockInfos != null && fstockInfos.isEmpty() == false) {
+			currentFocusedStockInfoIndex=(currentFocusedStockInfoIndex+1)%fstockInfos.size();
+			stockInfo=fstockInfos.get(currentFocusedStockInfoIndex);
+		    
+		} 
+		return stockInfo;
+	}
 
+	public StockInfo focusedPrevious()
+	{
+		StockInfo stockInfo=null;
+		if (fstockInfos != null && fstockInfos.isEmpty() == false) {
+			--currentFocusedStockInfoIndex;
+			if(currentFocusedStockInfoIndex<0)
+			{
+				currentFocusedStockInfoIndex=fstockInfos.size()-1;
+			}
+			stockInfo=fstockInfos.get(currentFocusedStockInfoIndex);
+		} 
+		return stockInfo;
+	}
+	
 	public ArrayList<StockInfo> getAll() {
 		return stockInfos;
 	}
