@@ -13,5 +13,6 @@ public class App extends Application {
 	public void onCreate() {
      super.onCreate();
      dataHandler=new DataHandler(this.getApplicationContext());
+     Log.i("APPLICATION", "app oncreate");
     }
 }
